@@ -9,6 +9,7 @@ import { MetricLineChart } from "./MetricLineChart";
 import { MetricBarChart } from "./MetricBarChart";
 import { MetricTableChart } from "./MetricTableChart";
 import { MetricSingleValueChart } from "./MetricSingleValueChart";
+import DragIcon from "@webclient/components/Icons/Drag";
 
 function GetParametersByChartType(chartType) {
   if (chartType === "BAR_CHART") {
