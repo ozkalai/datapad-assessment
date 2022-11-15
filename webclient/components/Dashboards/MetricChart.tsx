@@ -110,10 +110,11 @@ function MetricChart(props) {
         </div>
       </div>
 
-      <div className="grow flex flex-col justify-center">
-        <div>
-          <params.component metric={props.metric} size={size} />
-        </div>
+        <button
+          className="appearance-none border-none outline-none hidden justify-end items-end absolute bottom-4 right-4 w-4 h-4 group-hover:cursor-grab group-hover:flex"
+        >
+          <DragIcon fill="currentColor" />
+        </button>
       </div>
     </div>
   );
