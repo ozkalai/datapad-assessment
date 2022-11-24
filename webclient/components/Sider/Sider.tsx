@@ -21,12 +21,11 @@ const Sider: React.FC<SiderProps> = ({
 }) => {
   return (
     <div
-      className={`absolute transition-all duration-200 ease-linear shadow-[-2px 0px 10px rgba(0, 0, 0, 0.1)] top-20 bg-white w-[410px] dark:bg-slate-800 min-h-full z-50 py-10 pl-[28px] pr-[32px] ${isSiderOpen ? 'right-0' : 'right-[-420px]'} ${className}`}
+      className={`absolute min-h-full overflow-scroll h-full transition-all duration-200 ease-linear shadow-[-2px 0px 10px rgba(0, 0, 0, 0.1)] top-20 bg-white w-[410px] dark:bg-slate-800 z-50 py-10 pl-[28px] pr-[32px] ${isSiderOpen ? 'right-0' : 'right-[-410px]'} ${className}`}
     >
       <div className="flex flex-col ritual-cyan-800 font-semibold  text-[18px] ">
         <div className="flex flex-col ">
           <div className="flex items-center justify-between w-full">
-
           <Conditional if={title !== undefined}>
             <>{title} </>
           </Conditional>
@@ -39,10 +38,9 @@ const Sider: React.FC<SiderProps> = ({
           
         />
         </div>
-         
         </div>
         {subTitle && (
-            <div className="flex items-center gap-2 text-[13px] text-lead-black-400">
+            <div className="flex items-center gap-1 text-[13px] text-lead-black-400">
               <Conditional if={subTitleIcon !== undefined}>
                 <div className="w-4">{subTitleIcon} </div>
               </Conditional>
@@ -51,7 +49,7 @@ const Sider: React.FC<SiderProps> = ({
           )}
        
       </div>
-      {children}
+      <div className="mt-7">{children}</div>
     </div>
   );
 };
