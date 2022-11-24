@@ -26,6 +26,9 @@ module.exports = {
       fontFamily: {
         "sans": ["SF Pro Rounded", defaultTheme.fontFamily.sans],
       },
+      boxShadow: {
+        "sider": "-2px 0px 10px rgba(0, 0, 0, 0.1)"
+      },
       colors: {
         "background": "#F8F8F8",
         "transparent": "transparent",
