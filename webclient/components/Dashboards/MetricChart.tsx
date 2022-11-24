@@ -57,7 +57,7 @@ function GetParametersByChartType(chartType) {
 }
 
 function MetricChart(props) {
-  const { metric, activeId, isOverlay, isInitialIndex } = props;
+  const { metric, activeId, isOverlay, isInitialIndex, showResizeIcon= true } = props;
   const params = GetParametersByChartType(metric.chart_type);
 
   const sizes = ["small", "medium", "large"];
@@ -125,6 +125,7 @@ function MetricChart(props) {
             </Conditional>
           </div>
 
+          <Conditional  if={showResizeIcon} >
           <div className="h-4 w-4 text-slate-400">
             <Link href=".">
               <a
@@ -135,6 +136,7 @@ function MetricChart(props) {
               </a>
             </Link>
           </div>
+          </Conditional>
         </div>
 
         <div className="grow flex flex-col justify-center ">
