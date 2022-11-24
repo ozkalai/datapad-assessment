@@ -5,7 +5,7 @@ import {
   type FetchpRequestInit,
   type FetchpResultInterface,
   FetchpStatus,
-} from "./fetchp.ts";
+} from "./fetchp";
 
 const useFetchpBuilder = function useFetchpBuilder(
   fetchpInstance: FetchpInterface,

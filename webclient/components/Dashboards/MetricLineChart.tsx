@@ -30,9 +30,8 @@ function MetricLineChart(props) {
   const { metric } = props;
   const color = colors[metric.color];
 
-  const options = {
+  const options: React.ComponentProps<typeof Line>["options"] = {
     responsive: true,
-    tension: 0.4,
     borderColor: color.accent.string(),
     animation: {
       duration: 800,
