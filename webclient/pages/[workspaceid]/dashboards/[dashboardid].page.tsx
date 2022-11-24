@@ -78,11 +78,15 @@ function DashboardInner(props) {
       onDragOver={handleDragOver}
     >
       <SortableContext items={items}>
+        <div className="flex justify-between">
         <Title
           icon={data.icon}
           title={data.title}
           subtitle={data.description}
+          
         />
+        <Button onClick={() => console.log("click")} className="h-fit px-4 py-3 leading-[19px] border-[1px] border-[rgba(0, 0, 0, 0.1)] rounded-[6px] shadow-sm text-[#5B4CCC]" title="+ Add New KPI"></Button>
+        </div>
         <div
           ref={setNodeRef}
           className="grid grid-flow-row-dense grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6"
