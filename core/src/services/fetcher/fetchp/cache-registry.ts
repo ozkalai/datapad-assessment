@@ -1,7 +1,7 @@
 import {
   UrlCollection,
   type UrlCollectionInterface,
-} from "./url-collection.ts";
+} from "./url-collection";
 
 // interface definitions
 // ---------------------

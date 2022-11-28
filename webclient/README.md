@@ -41,6 +41,9 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
+## Testing The Re-order Feature
+
+To test the re-order feature, first you need to follow the above sections then after you run the command `npm run dev` and open `http://localhost3000` you should navigate to the demo dasboard. In the dashboard you will see four different charts which are draggable from the bottom right icon that is visible on hover state.
 
 ## Learn More
 

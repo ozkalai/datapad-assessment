@@ -5,12 +5,12 @@ import {
   FetchpHookType,
   HookRegistry,
   type HookRegistryInterface,
-} from "./hook-registry.ts";
-import { MockRegistry, type MockRegistryInterface } from "./mock-registry.ts";
+} from "./hook-registry";
+import { MockRegistry, type MockRegistryInterface } from "./mock-registry";
 import {
   CacheRegistry,
   type CacheRegistryInterface,
-} from "./cache-registry.ts";
+} from "./cache-registry";
 
 enum FetchpStatus {
   IDLE = "idle",

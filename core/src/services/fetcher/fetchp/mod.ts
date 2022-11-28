@@ -1,3 +1,3 @@
-export { useFetchp, useFetchpBuilder } from "./use-fetchp.ts";
-export { default } from "./fetchp.ts";
-export * from "./fetchp.ts";
+export { useFetchp, useFetchpBuilder } from "./use-fetchp";
+export { default } from "./fetchp";
+export * from "./fetchp";

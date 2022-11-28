@@ -12,7 +12,7 @@ const HeaderThemeSwitcher = (_props) => {
     <div className="ml-6">
       <Link href="/">
         <>
-          {(theme !== "dark") && (
+          {theme !== "dark" && (
             <a
               href="/"
               onClick={(e) => {
@@ -24,7 +24,7 @@ const HeaderThemeSwitcher = (_props) => {
               <MoonIcon className="h-8 w-8 flex-shrink-0 mr-3" />
             </a>
           )}
-          {(theme === "dark") && (
+          {theme === "dark" && (
             <a
               href="/"
               onClick={(e) => {
@@ -51,40 +51,43 @@ const HeaderComponent = (props: HeaderProps) => {
   const { theme } = useTheme();
 
   return (
-    <header
-      className={classNames([
-        props.transparentBg !== true &&
-        "border-b-black-10 dark:bg-slate-800 bg-white shadow",
-      ])}
-    >
-      <div className="container mx-auto p-4 flex flex-row justify-between w-full">
-        <div className="flex justify-start items-center justify-self-start">
-          <h1 className="flex">
-            <Link href="/">
-              <a>
-                <Image
-                  src={(theme === "dark")
-                    ? "/img/logo-dark.svg"
-                    : "/img/logo.svg"}
-                  alt="datapad"
-                  width={135}
-                  height={32}
-                />
-              </a>
-            </Link>
-          </h1>
-          <h2
-            data-testid="heading"
-            className="hidden md:inline-block dark:text-gray-400 text-ritual-cyan-500 font-medium px-3 mx-4 border-l-2 border-gray-300"
-          >
-            {props.title}
-          </h2>
+    <>
+      <header
+        className={classNames([
+          props.transparentBg !== true &&
+            "border-b-black-10 dark:bg-slate-800 bg-white shadow fixed top-0 left-0 w-full z-[100]",
+        ])}
+      >
+        <div className="container mx-auto p-4 flex flex-row justify-between w-full">
+          <div className="flex justify-start items-center justify-self-start">
+            <h1 className="flex">
+              <Link href="/">
+                <a>
+                  <Image
+                    src={
+                      theme === "dark" ? "/img/logo-dark.svg" : "/img/logo.svg"
+                    }
+                    alt="datapad"
+                    width={135}
+                    height={32}
+                  />
+                </a>
+              </Link>
+            </h1>
+            <h2
+              data-testid="heading"
+              className="hidden md:inline-block dark:text-gray-400 text-ritual-cyan-500 font-medium px-3 mx-4 border-l-2 border-gray-300"
+            >
+              {props.title}
+            </h2>
+          </div>
+          <div className="flex justify-end items-end justify-self-end">
+            <HeaderThemeSwitcher />
+          </div>
         </div>
-        <div className="flex justify-end items-end justify-self-end">
-          <HeaderThemeSwitcher />
-        </div>
-      </div>
-    </header>
+      </header>
+      <div className="h-20" />
+    </>
   );
 };
 
