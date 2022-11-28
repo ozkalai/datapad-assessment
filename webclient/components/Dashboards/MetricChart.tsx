@@ -10,7 +10,7 @@ import { MetricLineChart } from "./MetricLineChart";
 import { MetricBarChart } from "./MetricBarChart";
 import { MetricTableChart } from "./MetricTableChart";
 import { MetricSingleValueChart } from "./MetricSingleValueChart";
-import DragIcon from "@webclient/components/Icons/Drag";
+import ResizeIcon from "@webclient/components/Icons/Drag";
 
 function GetParametersByChartType(chartType) {
   if (chartType === "BAR_CHART") {
@@ -140,18 +140,16 @@ function MetricChart(props) {
             </Conditional>
           </div>
 
-          <Conditional if={showResizeIcon}>
-            <div className="h-4 w-4 text-slate-400">
-              <Link href=".">
-                <a
-                  onClick={(e) => resizeClick(e)}
-                  className="hidden group-hover:block"
-                >
-                  <ArrowsExpandIcon />
-                </a>
-              </Link>
-            </div>
-          </Conditional>
+          <div className="h-4 w-4 text-slate-400">
+            <Link href=".">
+              <a
+                onClick={(e) => resizeClick(e)}
+                className="hidden group-hover:block"
+              >
+                <ArrowsExpandIcon />
+              </a>
+            </Link>
+          </div>
         </div>
 
         <div className="grow flex flex-col justify-center ">
@@ -159,14 +157,19 @@ function MetricChart(props) {
             <params.component metric={props.metric} size={size} />
           </div>
         </div>
-        <button
-          ref={mode !== "new-in-sider" ? setActivatorNodeRef : undefined}
-          {...(mode !== "new-in-sider" ? listeners : {})}
-          {...(mode !== "new-in-sider" ? attributes : {})}
-          className="appearance-none border-none outline-none hidden justify-end items-end absolute bottom-4 right-4 w-4 h-4 group-hover:cursor-grab group-hover:flex"
-        >
-          <DragIcon fill="currentColor" />
+        <button className="appearance-none border-none outline-none hidden justify-end items-end absolute bottom-4 right-4 w-4 h-4 group-hover:cursor-nwse-resize group-hover:flex">
+          <ResizeIcon fill="currentColor" />
         </button>
+        <Conditional if={showResizeIcon}>
+          <button
+            ref={mode !== "new-in-sider" ? setActivatorNodeRef : undefined}
+            {...(mode !== "new-in-sider" ? listeners : {})}
+            {...(mode !== "new-in-sider" ? attributes : {})}
+            className="rotate-45 text-slate-400 appearance-none border-none outline-none hidden justify-end items-end absolute bottom-4 left-4 w-4 h-4 group-hover:cursor-grab group-hover:flex"
+          >
+            <ArrowsExpandIcon />
+          </button>
+        </Conditional>
       </div>
     </div>
   );
