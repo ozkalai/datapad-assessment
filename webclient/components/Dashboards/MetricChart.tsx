@@ -57,7 +57,15 @@ function GetParametersByChartType(chartType) {
 }
 
 function MetricChart(props) {
-  const { metric, activeId, isOverlay, isInitialIndex, showResizeIcon= true } = props;
+  const {
+    metric,
+    activeId,
+    isOverlay,
+    isInitialIndex,
+    showResizeIcon = true,
+    className,
+    mode,
+  } = props;
   const params = GetParametersByChartType(metric.chart_type);
 
   const sizes = ["small", "medium", "large"];
@@ -72,6 +80,10 @@ function MetricChart(props) {
   const { attributes, listeners, setNodeRef, setActivatorNodeRef, transition } =
     useSortable({
       id: metric.id,
+      data: {
+        mode: metric.mode,
+      },
+      disabled: isOverlay,
     });
 
   const style = {
@@ -80,8 +92,10 @@ function MetricChart(props) {
 
   return (
     <div
+      {...(mode === "new-in-sider" ? listeners : {})}
+      {...(mode === "new-in-sider" ? attributes : {})}
       style={style}
-      ref={setNodeRef}
+      ref={mode !== "new-in-sider" ? setNodeRef : setActivatorNodeRef}
       className={classNames([
         "flex flex-col h-full shadow-sm dark:bg-slate-800 bg-white rounded-lg group p-4 relative",
         size === "medium" && "col-span-2 row-span-1",
@@ -92,7 +106,8 @@ function MetricChart(props) {
         isInitialIndex &&
           metric.id === activeId &&
           "border-dashed border-2 border-gray-500 bg-transparent",
-        isOverlay && "shadow-2xl",
+        isOverlay && "shadow-2xl cursor-grabbing",
+        className,
       ])}
     >
       <div
@@ -125,17 +140,17 @@ function MetricChart(props) {
             </Conditional>
           </div>
 
-          <Conditional  if={showResizeIcon} >
-          <div className="h-4 w-4 text-slate-400">
-            <Link href=".">
-              <a
-                onClick={(e) => resizeClick(e)}
-                className="hidden group-hover:block"
-              >
-                <ArrowsExpandIcon />
-              </a>
-            </Link>
-          </div>
+          <Conditional if={showResizeIcon}>
+            <div className="h-4 w-4 text-slate-400">
+              <Link href=".">
+                <a
+                  onClick={(e) => resizeClick(e)}
+                  className="hidden group-hover:block"
+                >
+                  <ArrowsExpandIcon />
+                </a>
+              </Link>
+            </div>
           </Conditional>
         </div>
 
@@ -145,9 +160,9 @@ function MetricChart(props) {
           </div>
         </div>
         <button
-          ref={setActivatorNodeRef}
-          {...listeners}
-          {...attributes}
+          ref={mode !== "new-in-sider" ? setActivatorNodeRef : undefined}
+          {...(mode !== "new-in-sider" ? listeners : {})}
+          {...(mode !== "new-in-sider" ? attributes : {})}
           className="appearance-none border-none outline-none hidden justify-end items-end absolute bottom-4 right-4 w-4 h-4 group-hover:cursor-grab group-hover:flex"
         >
           <DragIcon fill="currentColor" />
