@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -15,7 +15,7 @@ import Sider from "@webclient/components/Sider/Sider";
 import { useDashboardFetch } from "@core/hooks/data/use-dashboard-fetch";
 import useMetricsAllFetch from "@core/hooks/data/use-metrics-all-fetch";
 import { MetricChart } from "@webclient/components/Dashboards/MetricChart";
-import { Metric, Data } from "@webclient/types/KPI";
+import { Metric } from "@webclient/types/KPI";
 import {
   isTouchEvent,
   isMouseEvent,
@@ -63,6 +63,22 @@ function DashboardInner(props) {
       setAllKPIs(allMetricsWithIds);
     }
   }, [allMetricsIsSuccess, allMetricsData]);
+
+  const siderKPIs = useMemo(
+    () =>
+      allKPIs?.filter((metric) => {
+        return !dashboardKPIs.find(
+          (dashboardMetric) => dashboardMetric.id === metric.id
+        );
+      }),
+    [allKPIs, dashboardKPIs]
+  );
+
+  React.useEffect(() => {
+    if (siderKPIs.length === 0) {
+      setIsSiderOpen(false);
+    }
+  }, [siderKPIs]);
 
   if (isError) {
     return <>error: {JSON.stringify(error)}</>;
@@ -173,24 +189,18 @@ function DashboardInner(props) {
           overlayHidden={!!activeId}
         >
           <div className="mt-6 flex flex-col gap-8 " ref={setNodeRef}>
-            {allKPIs
-              ?.filter((metric) => {
-                return !dashboardKPIs.find(
-                  (dashboardMetric) => dashboardMetric.id === metric.id
-                );
-              })
-              .map((metric, index) => {
-                return (
-                  <MetricChart
-                    key={metric.id}
-                    className="border-[1px] rounded-lg"
-                    mode="new-in-sider"
-                    isInitialIndex={initialIndex === index}
-                    activeId={activeId}
-                    metric={metric}
-                  />
-                );
-              })}
+            {siderKPIs.map((metric, index) => {
+              return (
+                <MetricChart
+                  key={metric.id}
+                  className="border-[1px] rounded-lg"
+                  mode="new-in-sider"
+                  isInitialIndex={initialIndex === index}
+                  activeId={activeId}
+                  metric={metric}
+                />
+              );
+            })}
           </div>
         </Sider>
       </SortableContext>
@@ -203,6 +213,7 @@ function DashboardInner(props) {
               subtitle={data.description}
             />
             <Button
+              disabled={siderKPIs.length === 0}
               onClick={() => setIsSiderOpen(true)}
               className="h-fit px-4 py-3 leading-[19px] border-[1px] border-[rgba(0, 0, 0, 0.1)] rounded-[6px] shadow-sm text-[#5B4CCC]"
               title="+ Add New KPI"
@@ -219,6 +230,14 @@ function DashboardInner(props) {
                     isInitialIndex={initialIndex === index}
                     activeId={activeId}
                     metric={metric}
+                    onRemove={() => {
+                      setDashboardKPIs((prev) =>
+                        prev.filter((el) => el.id !== metric.id)
+                      );
+                      toast("KPI removed succesfully from the dashboard!", {
+                        type: "success",
+                      });
+                    }}
                   />
                 </React.Fragment>
               );
