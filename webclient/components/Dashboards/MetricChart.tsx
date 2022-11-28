@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { useSortable } from "@dnd-kit/sortable";
 import { ArrowsExpandIcon } from "@heroicons/react/solid";
+import { DotsHorizontalIcon, XIcon } from "@heroicons/react/outline";
+
 import { classNames } from "@core/react/class-names";
 import { Conditional } from "@core/react/conditional";
 import { dateFormatter } from "@core/standards/date-formatter";
@@ -11,22 +12,8 @@ import { MetricBarChart } from "./MetricBarChart";
 import { MetricTableChart } from "./MetricTableChart";
 import { MetricSingleValueChart } from "./MetricSingleValueChart";
 import ResizeIcon from "@webclient/components/Icons/Drag";
-
-function getDistance(x1, y1, x2, y2) {
-  const xDistance = x2 - x1;
-  const yDistance = y2 - y1;
-  return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
-}
-
-function getAngle(x1, y1, x2, y2) {
-  const xDistance = x2 - x1;
-  const yDistance = y2 - y1;
-  let angle = (Math.atan2(yDistance, xDistance) * 180) / Math.PI;
-  if (angle < 0) {
-    angle = 360 + angle;
-  }
-  return angle;
-}
+import ContextMenu from "../ContextMenu/ContextMenu";
+import { getAngle, getDistance } from "@webclient/utils/calculate";
 
 function GetParametersByChartType(chartType) {
   if (chartType === "BAR_CHART") {
@@ -82,6 +69,7 @@ function MetricChart(props) {
     isInitialIndex,
     showResizeIcon = true,
     className,
+    onRemove,
     mode,
   } = props;
   const params = GetParametersByChartType(metric.chart_type);
@@ -177,6 +165,17 @@ function MetricChart(props) {
     };
   }, [handlePointerMove, isResizing]);
 
+  const handlePointerDown = useCallback(
+    (event: React.PointerEvent<HTMLButtonElement>) => {
+      setIsResizing(true);
+      startPoints.current = {
+        x: event.clientX,
+        y: event.clientY,
+      };
+    },
+    []
+  );
+
   return (
     <div
       {...(mode === "new-in-sider" ? listeners : {})}
@@ -227,6 +226,27 @@ function MetricChart(props) {
               </h3>
             </Conditional>
           </div>
+          <Conditional if={mode !== "new-in-sider"}>
+            <div className="h-4 w-4">
+              <ContextMenu
+                items={[
+                  {
+                    label: (
+                      <div className="flex items-center gap-2">
+                        <XIcon className="text-krasnyi-red-500 w-4 h-4" />
+                        <span>Remove</span>
+                      </div>
+                    ),
+                    onClick: onRemove,
+                  },
+                ]}
+              >
+                <a className="hidden group-hover:block cursor-pointer">
+                  <DotsHorizontalIcon className="opacity-30 cursor-pointer" />
+                </a>
+              </ContextMenu>
+            </div>
+          </Conditional>
         </div>
 
         <div className="grow flex flex-col justify-center ">
@@ -234,26 +254,22 @@ function MetricChart(props) {
             <params.component metric={props.metric} size={size} />
           </div>
         </div>
-        <button
-          onPointerDown={(e) => {
-            setIsResizing(true);
-            startPoints.current = {
-              x: e.clientX,
-              y: e.clientY,
-            };
-          }}
-          className={`appearance-none border-none outline-none hidden justify-end items-end absolute bottom-4 right-4 w-4 h-4 group-hover:cursor-nwse-resize group-hover:flex `}
-        >
-          <ResizeIcon fill="currentColor" />
-        </button>
-        <Conditional if={showResizeIcon}>
+        <Conditional if={mode !== "new-in-sider"}>
           <button
-            ref={mode !== "new-in-sider" ? setActivatorNodeRef : undefined}
-            {...(mode !== "new-in-sider" ? listeners : {})}
-            {...(mode !== "new-in-sider" ? attributes : {})}
-            className="rotate-45 text-slate-400 appearance-none border-none outline-none hidden justify-end items-end absolute bottom-4 left-4 w-4 h-4 group-hover:cursor-grab group-hover:flex"
+            onPointerDown={handlePointerDown}
+            className="appearance-none border-none outline-none hidden justify-end items-end absolute bottom-4 right-4 w-4 h-4 group-hover:cursor-nwse-resize group-hover:flex "
           >
-            <ArrowsExpandIcon />
+            <ResizeIcon className="opacity-10 dark:opacity-30 dark:fill-white" />
+          </button>
+        </Conditional>
+        <Conditional if={showResizeIcon && mode !== "new-in-sider"}>
+          <button
+            ref={setActivatorNodeRef}
+            {...listeners}
+            {...attributes}
+            className="rotate-45 appearance-none border-none outline-none hidden justify-end items-end absolute bottom-4 left-4 w-4 h-4 group-hover:cursor-grab group-hover:flex"
+          >
+            <ArrowsExpandIcon className="opacity-30" />
           </button>
         </Conditional>
       </div>
