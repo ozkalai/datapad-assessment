@@ -10,6 +10,7 @@ type ButtonProps = {
   spinnerClassName?: string | undefined;
   loading?: boolean;
   buttonImage?: React.ReactNode;
+  disabled?: boolean;
 };
 
 const Button = ({
@@ -19,12 +20,14 @@ const Button = ({
   className,
   spinnerClassName,
   loading,
-  buttonImage
+  buttonImage,
+  disabled,
 }: ButtonProps) => {
   return (
     <button
+      disabled={disabled}
       type={type ?? "button"}
-      className={`inline-flex items-center drop-shadow-sm px-4 py-2 leading-6 text-md transition ease-in-out duration-150 cursor-pointer ${className}`}
+      className={`inline-flex items-center drop-shadow-sm px-4 py-2 leading-6 text-md transition ease-in-out duration-150 cursor-pointer disabled:cursor-not-allowed disabled:opacity-70 ${className}`}
       onClick={onClick}
     >
       {loading && (
@@ -51,12 +54,8 @@ const Button = ({
       )}
       {title}
       {buttonImage && (
-        <span className="ml-2 flex align-center">
-          {buttonImage}
-        </span>
-        
+        <span className="ml-2 flex align-center">{buttonImage}</span>
       )}
-      
     </button>
   );
 };
