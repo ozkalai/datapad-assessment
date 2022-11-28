@@ -1,8 +1,8 @@
-import * as React from "react"
+import * as React from "react";
 
-const DragIcon = (props) => (
+const ResizeIcon = (props) => (
   <svg
-  className={props.className}
+    className={props.className}
     width={12}
     height={12}
     xmlns="http://www.w3.org/2000/svg"
@@ -17,6 +17,6 @@ const DragIcon = (props) => (
     <circle cx={6} cy={10.5} r={1.5} fill={props.fill} fillOpacity={0.1} />
     <circle cx={1.5} cy={10.5} r={1.5} fill={props.fill} fillOpacity={0.1} />
   </svg>
-)
+);
 
-export default DragIcon
+export default ResizeIcon;
